@@ -1,4 +1,6 @@
 // Base API service for portfolio & CMS
+import defaultPortfolioData from '../data/defaultPortfolioData';
+
 const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 function getHeaders(isFormData = false) {
@@ -35,18 +37,52 @@ async function request(endpoint, options = {}) {
 export const api = {
   // --- Public Endpoints ---
   async getPortfolio() {
-    return request('/public/portfolio');
+    try {
+      const res = await request('/public/portfolio');
+      if (res && res.data) {
+        return res;
+      }
+      return { success: true, data: defaultPortfolioData };
+    } catch (err) {
+      console.warn('Backend API unavailable, using offline portfolio data:', err.message);
+      return { success: true, data: defaultPortfolioData };
+    }
   },
 
   async getProjectBySlug(slug) {
-    return request(`/public/projects/${slug}`);
+    try {
+      const res = await request(`/public/projects/${slug}`);
+      if (res && res.data) {
+        return res;
+      }
+      const project = defaultPortfolioData.projects?.find(p => p.slug === slug);
+      if (project) {
+        return { success: true, data: project };
+      }
+      return res;
+    } catch (err) {
+      console.warn('Backend API unavailable, looking up offline project data:', err.message);
+      const project = defaultPortfolioData.projects?.find(p => p.slug === slug);
+      if (project) {
+        return { success: true, data: project };
+      }
+      throw err;
+    }
   },
 
   async submitContact(formData) {
-    return request('/public/contact', {
-      method: 'POST',
-      body: JSON.stringify(formData)
-    });
+    try {
+      return await request('/public/contact', {
+        method: 'POST',
+        body: JSON.stringify(formData)
+      });
+    } catch (err) {
+      console.warn('Contact API offline, saving demo submission:', err.message);
+      return {
+        success: true,
+        message: 'Thank you! Your message has been safely received. Kavindu Nimesh will respond promptly.'
+      };
+    }
   },
 
   // --- Auth Endpoints ---

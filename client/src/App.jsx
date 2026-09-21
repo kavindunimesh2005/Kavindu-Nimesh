@@ -22,7 +22,7 @@ import AdminSettings from './admin/pages/AdminSettings';
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       {/* 2026 Magnetic Velocity Custom Cursor */}
       <CustomCursor />
 
