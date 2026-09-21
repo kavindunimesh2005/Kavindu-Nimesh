@@ -1,0 +1,17 @@
+{
+  "name": "kavindu-nimesh-portfolio",
+  "version": "2.0.26",
+  "description": "Award-Winning 2026 Developer Portfolio & CMS for Kavindu Nimesh - Aura Digital Developer Sri Lanka",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm run dev",
+    "dev": "concurrently --kill-others-on-fail -n \"SERVER,CLIENT\" -c \"red,cyan\" \"npm run server\" \"npm run client\"",
+    "seed": "cd server && npm run seed",
+    "build": "cd client && npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
