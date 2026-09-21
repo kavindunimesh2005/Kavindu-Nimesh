@@ -1,5 +1,6 @@
 import React from 'react';
-import { ArrowUp, Github, Linkedin, Briefcase, Video, PhoneCall, Mail, Heart } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowUp, Github, Linkedin, Briefcase, Video, PhoneCall, Mail, Heart, Lock } from 'lucide-react';
 import { useSound } from '../../hooks/useSound';
 
 export default function Footer({ about, socials }) {
@@ -202,8 +203,30 @@ export default function Footer({ about, socials }) {
             gap: '1.25rem'
           }}
         >
-          <div style={{ color: '#71717a', fontSize: '0.85rem' }}>
-            © {new Date().getFullYear()} Kavindu Nimesh. All rights reserved. Crafted for <span style={{ color: '#ffffff' }}>Aura Digital Developer Sri Lanka</span>.
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
+            <div style={{ color: '#71717a', fontSize: '0.85rem' }}>
+              © {new Date().getFullYear()} Kavindu Nimesh. All rights reserved. Crafted for <span style={{ color: '#ffffff' }}>Aura Digital Developer Sri Lanka</span>.
+            </div>
+            <Link
+              to="/admin/login"
+              onMouseEnter={playHover}
+              onClick={playClick}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.35rem',
+                color: '#52525b',
+                fontSize: '0.78rem',
+                textDecoration: 'none',
+                transition: 'color 0.2s ease',
+                fontFamily: "'JetBrains Mono', monospace"
+              }}
+              className="interactive-hover"
+              title="Aura CMS Admin Portal"
+            >
+              <Lock size={12} style={{ color: '#e50914' }} />
+              <span>CMS Portal</span>
+            </Link>
           </div>
 
           {/* Back To Top Magnetic Button */}
