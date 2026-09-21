@@ -48,8 +48,9 @@ export default function AdminAbout() {
     setUploadingImage(true);
     try {
       const res = await api.uploadImage(file);
-      if (res.success && res.data?.path) {
-        setFormData(prev => ({ ...prev, portrait_url: res.data.path }));
+      const newPath = res.data?.path || res.url;
+      if (res.success && newPath) {
+        setFormData(prev => ({ ...prev, portrait_url: newPath }));
       }
     } catch (err) {
       alert(err.message || 'Image upload failed');
@@ -253,6 +254,31 @@ export default function AdminAbout() {
               <input type="file" accept="image/*" onChange={handlePortraitUpload} style={{ display: 'none' }} />
             </label>
           </div>
+
+          {/* Live Portrait Preview Thumbnail */}
+          {formData.portrait_url && (
+            <div style={{ marginTop: '0.85rem', display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.75rem 1rem', borderRadius: '10px', backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <img
+                src={formData.portrait_url}
+                alt="Portrait Preview"
+                style={{
+                  width: '56px',
+                  height: '56px',
+                  borderRadius: '10px',
+                  objectFit: 'cover',
+                  border: '1px solid #e50914'
+                }}
+              />
+              <div>
+                <div style={{ fontSize: '0.82rem', fontWeight: 600, color: '#10b981' }}>
+                  ✓ Photo selected & ready to save
+                </div>
+                <div style={{ fontSize: '0.75rem', color: '#71717a' }}>
+                  Click "Save Biography & Live Statistics" below to persist changes.
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         <div style={{ marginBottom: '1.25rem' }}>

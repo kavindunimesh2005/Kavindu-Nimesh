@@ -100,8 +100,9 @@ export default function AdminProjects() {
     setUploadingImage(true);
     try {
       const res = await api.uploadImage(file);
-      if (res.success && res.data?.path) {
-        setFormData(prev => ({ ...prev, image_url: res.data.path }));
+      const newPath = res.data?.path || res.url;
+      if (res.success && newPath) {
+        setFormData(prev => ({ ...prev, image_url: newPath }));
       }
     } catch (err) {
       alert(err.message || 'Image upload failed');

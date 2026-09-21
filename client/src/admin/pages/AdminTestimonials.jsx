@@ -70,8 +70,9 @@ export default function AdminTestimonials() {
     setUploadingImage(true);
     try {
       const res = await api.uploadImage(file);
-      if (res.success && res.data?.path) {
-        setFormData(prev => ({ ...prev, avatar_url: res.data.path }));
+      const newPath = res.data?.path || res.url;
+      if (res.success && newPath) {
+        setFormData(prev => ({ ...prev, avatar_url: newPath }));
       }
     } catch (err) {
       alert(err.message || 'Avatar upload failed');
