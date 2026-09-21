@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate, useLocation, Outlet } from 'react-router-dom';
+import { Link, useNavigate, useLocation, Outlet, Navigate } from 'react-router-dom';
 import { 
   LayoutDashboard, FolderKanban, Wrench, Layers, 
   Briefcase, MessageSquare, Star, User, Settings, 
@@ -24,8 +24,7 @@ export default function AdminLayout() {
   }
 
   if (!isAuthenticated) {
-    navigate('/admin/login');
-    return null;
+    return <Navigate to="/admin/login" replace />;
   }
 
   const menuItems = [
