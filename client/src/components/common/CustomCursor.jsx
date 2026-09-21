@@ -10,13 +10,29 @@ export default function CustomCursor() {
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   useEffect(() => {
-    // Detect touch device or reduced motion
-    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (isTouch || prefersReducedMotion) {
+    // Detect touch device, pointer type, or small screen
+    const checkIsTouch = () => {
+      const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const isCoarse = window.matchMedia('(pointer: coarse)').matches;
+      const isMobileWidth = window.innerWidth <= 1024;
+      return isTouch || prefersReducedMotion || isCoarse || isMobileWidth;
+    };
+
+    if (checkIsTouch()) {
       setIsTouchDevice(true);
       return;
     }
+
+    const handleWindowResize = () => {
+      if (checkIsTouch()) {
+        setIsTouchDevice(true);
+      } else {
+        setIsTouchDevice(false);
+      }
+    };
+
+    window.addEventListener('resize', handleWindowResize);
 
     let mouseX = -100;
     let mouseY = -100;
@@ -80,6 +96,7 @@ export default function CustomCursor() {
 
     return () => {
       cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', handleWindowResize);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);

@@ -51,10 +51,10 @@ export default function Services({ services }) {
 
         {/* 6 Interactive Distinctive Service Cards Grid */}
         <div
+          className="services-grid"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-            gap: '1.75rem'
+            gap: '1.5rem'
           }}
         >
           {services?.map((service, index) => {
@@ -69,7 +69,6 @@ export default function Services({ services }) {
                   backgroundColor: isHovered ? 'var(--bg-card-hover)' : 'var(--bg-card)',
                   border: isHovered ? '1px solid #e50914' : '1px solid var(--border-subtle)',
                   borderRadius: '18px',
-                  padding: '2.5rem',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
@@ -81,7 +80,7 @@ export default function Services({ services }) {
               >
                 {/* Top: Service Number & Icon */}
                 <div>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.75rem' }}>
                     <span
                       style={{
                         fontFamily: "'JetBrains Mono', monospace",
@@ -97,9 +96,9 @@ export default function Services({ services }) {
 
                     <div
                       style={{
-                        width: '54px',
-                        height: '54px',
-                        borderRadius: '14px',
+                        width: '50px',
+                        height: '50px',
+                        borderRadius: '12px',
                         backgroundColor: isHovered ? '#e50914' : 'rgba(255, 255, 255, 0.05)',
                         color: '#ffffff',
                         display: 'flex',
@@ -117,9 +116,9 @@ export default function Services({ services }) {
                   <h3
                     style={{
                       fontFamily: "'Syne', sans-serif",
-                      fontSize: '1.45rem',
+                      fontSize: '1.35rem',
                       fontWeight: 800,
-                      marginBottom: '1rem',
+                      marginBottom: '0.85rem',
                       color: 'var(--text-primary)',
                       letterSpacing: '-0.02em'
                     }}
@@ -131,9 +130,9 @@ export default function Services({ services }) {
                   <p
                     style={{
                       color: 'var(--text-secondary)',
-                      fontSize: '0.94rem',
+                      fontSize: '0.92rem',
                       lineHeight: 1.7,
-                      marginBottom: '1.75rem'
+                      marginBottom: '1.5rem'
                     }}
                   >
                     {service.description}
@@ -200,6 +199,23 @@ export default function Services({ services }) {
         </div>
 
       </div>
+
+      <style>{`
+        .services-grid {
+          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        }
+        .service-card {
+          padding: 2.25rem;
+        }
+        @media (max-width: 640px) {
+          .services-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .service-card {
+            padding: 1.5rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

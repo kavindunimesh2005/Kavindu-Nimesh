@@ -40,16 +40,18 @@ export default function FeaturedProjects({ projects }) {
             </p>
           </div>
 
-          {/* Category Filter Pills */}
+          {/* Category Filter Pills (Scrollable on mobile) */}
           <div
+            className="no-scrollbar project-filter-bar"
             style={{
               display: 'flex',
               gap: '0.5rem',
-              flexWrap: 'wrap',
               backgroundColor: 'var(--bg-elevated)',
               padding: '0.4rem',
               borderRadius: '100px',
-              border: '1px solid var(--border-subtle)'
+              border: '1px solid var(--border-subtle)',
+              maxWidth: '100%',
+              overflowX: 'auto'
             }}
           >
             {categories.map((cat) => {
@@ -65,10 +67,12 @@ export default function FeaturedProjects({ projects }) {
                     fontFamily: "'Space Grotesk', sans-serif",
                     fontSize: '0.84rem',
                     fontWeight: 600,
+                    whiteSpace: 'nowrap',
                     color: isSelected ? '#ffffff' : 'var(--text-secondary)',
                     backgroundColor: isSelected ? '#e50914' : 'transparent',
                     boxShadow: isSelected ? '0 0 15px rgba(229, 9, 20, 0.4)' : 'none',
-                    transition: 'all 0.25s ease'
+                    transition: 'all 0.25s ease',
+                    flexShrink: 0
                   }}
                   className="interactive-hover"
                 >
@@ -79,8 +83,8 @@ export default function FeaturedProjects({ projects }) {
           </div>
         </div>
 
-        {/* Large Editorial Showcase Cards (Vertical Staggered Format) */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
+        {/* Large Editorial Showcase Cards */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
           {filteredProjects?.map((project, idx) => {
             const isHovered = hoveredProjectId === project.id;
             const isEven = idx % 2 === 1;
@@ -96,25 +100,22 @@ export default function FeaturedProjects({ projects }) {
                   border: isHovered ? '1px solid #e50914' : '1px solid var(--border-subtle)',
                   borderRadius: '24px',
                   overflow: 'hidden',
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
-                  alignItems: 'center',
                   boxShadow: isHovered
                     ? '0 30px 60px -15px rgba(229, 9, 20, 0.25)'
                     : '0 20px 40px rgba(0, 0, 0, 0.4)',
                   transition: 'all 0.45s cubic-bezier(0.16, 1, 0.3, 1)'
                 }}
-                className="project-card interactive-hover"
+                className={`project-card project-showcase-card ${isEven ? 'card-even' : 'card-odd'} interactive-hover`}
               >
                 {/* Media Image Showcase Container */}
                 <div
                   onClick={() => { playClick(); navigate(`/projects/${project.slug}`); }}
+                  className="project-media-col"
                   style={{
                     position: 'relative',
                     aspectRatio: '16 / 10',
                     overflow: 'hidden',
-                    cursor: 'pointer',
-                    order: isEven ? 2 : 1
+                    cursor: 'pointer'
                   }}
                 >
                   <img
@@ -144,8 +145,8 @@ export default function FeaturedProjects({ projects }) {
                   <div
                     style={{
                       position: 'absolute',
-                      top: '1.25rem',
-                      left: '1.25rem',
+                      top: '1rem',
+                      left: '1rem',
                       padding: '0.35rem 0.85rem',
                       borderRadius: '100px',
                       backgroundColor: 'rgba(5, 5, 5, 0.85)',
@@ -167,8 +168,8 @@ export default function FeaturedProjects({ projects }) {
                   <div
                     style={{
                       position: 'absolute',
-                      top: '1.25rem',
-                      right: '1.25rem',
+                      top: '1rem',
+                      right: '1rem',
                       padding: '0.35rem 0.75rem',
                       borderRadius: '100px',
                       backgroundColor: 'rgba(5, 5, 5, 0.85)',
@@ -185,12 +186,11 @@ export default function FeaturedProjects({ projects }) {
 
                 {/* Editorial Content Details */}
                 <div
+                  className="project-content-col"
                   style={{
-                    padding: '3rem',
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    order: isEven ? 1 : 2
+                    justifyContent: 'space-between'
                   }}
                 >
                   <div>
@@ -199,11 +199,12 @@ export default function FeaturedProjects({ projects }) {
                       style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '1rem',
-                        marginBottom: '1rem',
+                        gap: '0.75rem',
+                        marginBottom: '0.85rem',
                         fontFamily: "'JetBrains Mono', monospace",
                         fontSize: '0.8rem',
-                        color: '#71717a'
+                        color: '#71717a',
+                        flexWrap: 'wrap'
                       }}
                     >
                       <span>CLIENT: <strong style={{ color: '#ffffff' }}>{project.client}</strong></span>
@@ -216,7 +217,7 @@ export default function FeaturedProjects({ projects }) {
                       onClick={() => { playClick(); navigate(`/projects/${project.slug}`); }}
                       style={{
                         fontFamily: "'Syne', sans-serif",
-                        fontSize: 'clamp(1.6rem, 2.8vw, 2.2rem)',
+                        fontSize: 'clamp(1.5rem, 2.5vw, 2.2rem)',
                         fontWeight: 800,
                         lineHeight: 1.2,
                         marginBottom: '1rem',
@@ -233,9 +234,9 @@ export default function FeaturedProjects({ projects }) {
                     <p
                       style={{
                         color: 'var(--text-secondary)',
-                        fontSize: '1rem',
+                        fontSize: '0.96rem',
                         lineHeight: 1.7,
-                        marginBottom: '1.75rem'
+                        marginBottom: '1.5rem'
                       }}
                     >
                       {project.short_description}
@@ -246,8 +247,8 @@ export default function FeaturedProjects({ projects }) {
                       style={{
                         display: 'flex',
                         flexWrap: 'wrap',
-                        gap: '0.5rem',
-                        marginBottom: '2rem'
+                        gap: '0.45rem',
+                        marginBottom: '1.75rem'
                       }}
                     >
                       {project.technologies?.map((tech, tIdx) => (
@@ -255,11 +256,11 @@ export default function FeaturedProjects({ projects }) {
                           key={tIdx}
                           style={{
                             fontFamily: "'JetBrains Mono', monospace",
-                            fontSize: '0.74rem',
+                            fontSize: '0.72rem',
                             color: '#ffffff',
                             backgroundColor: 'rgba(255, 255, 255, 0.06)',
                             border: '1px solid rgba(255, 255, 255, 0.1)',
-                            padding: '0.3rem 0.75rem',
+                            padding: '0.28rem 0.65rem',
                             borderRadius: '6px'
                           }}
                         >
@@ -274,9 +275,9 @@ export default function FeaturedProjects({ projects }) {
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '1rem',
+                      gap: '0.75rem',
                       flexWrap: 'wrap',
-                      paddingTop: '1.5rem',
+                      paddingTop: '1.25rem',
                       borderTop: '1px solid var(--border-subtle)'
                     }}
                   >
@@ -285,7 +286,7 @@ export default function FeaturedProjects({ projects }) {
                       to={`/projects/${project.slug}`}
                       onClick={playClick}
                       className="btn btn-primary interactive-hover"
-                      style={{ padding: '0.75rem 1.6rem', fontSize: '0.9rem' }}
+                      style={{ padding: '0.7rem 1.4rem', fontSize: '0.88rem' }}
                     >
                       <span>Case Study</span>
                       <ArrowUpRight size={16} />
@@ -304,10 +305,10 @@ export default function FeaturedProjects({ projects }) {
                           alignItems: 'center',
                           gap: '0.45rem',
                           color: '#a1a1aa',
-                          fontSize: '0.88rem',
+                          fontSize: '0.86rem',
                           fontFamily: "'Space Grotesk', sans-serif",
                           fontWeight: 600,
-                          padding: '0.75rem 1.1rem',
+                          padding: '0.68rem 1rem',
                           borderRadius: '100px',
                           border: '1px solid var(--border-subtle)',
                           transition: 'all 0.2s ease'
@@ -332,10 +333,10 @@ export default function FeaturedProjects({ projects }) {
                           alignItems: 'center',
                           gap: '0.45rem',
                           color: '#a1a1aa',
-                          fontSize: '0.88rem',
+                          fontSize: '0.86rem',
                           fontFamily: "'Space Grotesk', sans-serif",
                           fontWeight: 600,
-                          padding: '0.75rem 1.1rem',
+                          padding: '0.68rem 1rem',
                           borderRadius: '100px',
                           border: '1px solid var(--border-subtle)',
                           transition: 'all 0.2s ease'
@@ -355,13 +356,13 @@ export default function FeaturedProjects({ projects }) {
         </div>
 
         {/* Bottom CTA to View All Projects */}
-        <div style={{ marginTop: '4rem', textAlign: 'center' }}>
+        <div style={{ marginTop: '3.5rem', textAlign: 'center' }}>
           <Link
             to="/projects"
             onClick={playClick}
             onMouseEnter={playHover}
             className="btn btn-secondary interactive-hover"
-            style={{ padding: '1rem 2.5rem', fontSize: '1rem' }}
+            style={{ padding: '0.9rem 2.2rem', fontSize: '0.95rem' }}
           >
             <span>Explore All Projects & Archives</span>
             <ArrowUpRight size={18} style={{ color: '#e50914' }} />
@@ -369,6 +370,50 @@ export default function FeaturedProjects({ projects }) {
         </div>
 
       </div>
+
+      <style>{`
+        .project-showcase-card {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          align-items: center;
+        }
+        .card-odd .project-media-col {
+          order: 1;
+        }
+        .card-odd .project-content-col {
+          order: 2;
+          padding: 3rem;
+        }
+        .card-even .project-media-col {
+          order: 2;
+        }
+        .card-even .project-content-col {
+          order: 1;
+          padding: 3rem;
+        }
+
+        @media (max-width: 960px) {
+          .project-showcase-card {
+            grid-template-columns: 1fr !important;
+          }
+          .card-odd .project-media-col,
+          .card-even .project-media-col {
+            order: 1 !important;
+          }
+          .card-odd .project-content-col,
+          .card-even .project-content-col {
+            order: 2 !important;
+            padding: 2rem !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .card-odd .project-content-col,
+          .card-even .project-content-col {
+            padding: 1.35rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

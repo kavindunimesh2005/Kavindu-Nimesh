@@ -96,13 +96,14 @@ export default function AllProjects() {
 
           {/* Search & Filter Toolbar */}
           <div
+            className="allprojects-toolbar"
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               flexWrap: 'wrap',
-              gap: '1.25rem',
-              marginBottom: '3rem',
+              gap: '1rem',
+              marginBottom: '2.5rem',
               padding: '1.25rem',
               backgroundColor: 'var(--bg-elevated)',
               borderRadius: '16px',
@@ -110,7 +111,7 @@ export default function AllProjects() {
             }}
           >
             {/* Search Input */}
-            <div style={{ position: 'relative', flex: '1', minWidth: '240px' }}>
+            <div style={{ position: 'relative', flex: '1', minWidth: '220px' }}>
               <Search
                 size={18}
                 style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#71717a' }}
@@ -134,22 +135,32 @@ export default function AllProjects() {
             </div>
 
             {/* Category Filter Pills */}
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <div
+              className="no-scrollbar allprojects-filter-bar"
+              style={{
+                display: 'flex',
+                gap: '0.45rem',
+                maxWidth: '100%',
+                overflowX: 'auto'
+              }}
+            >
               {categories.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => { setCategory(cat); playClick(); }}
                   onMouseEnter={playHover}
                   style={{
-                    padding: '0.45rem 1rem',
+                    padding: '0.45rem 0.95rem',
                     borderRadius: '8px',
                     fontFamily: "'Space Grotesk', sans-serif",
-                    fontSize: '0.84rem',
+                    fontSize: '0.82rem',
                     fontWeight: 600,
+                    whiteSpace: 'nowrap',
                     backgroundColor: category === cat ? '#e50914' : 'var(--bg-card)',
                     color: category === cat ? '#ffffff' : 'var(--text-secondary)',
                     border: category === cat ? '1px solid #e50914' : '1px solid var(--border-subtle)',
-                    transition: 'all 0.2s ease'
+                    transition: 'all 0.2s ease',
+                    flexShrink: 0
                   }}
                   className="interactive-hover"
                 >
@@ -174,10 +185,10 @@ export default function AllProjects() {
             </div>
           ) : (
             <div
+              className="allprojects-grid"
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
-                gap: '2rem'
+                gap: '1.75rem'
               }}
             >
               {filtered.map((p) => (
@@ -288,9 +299,22 @@ export default function AllProjects() {
       <Footer />
 
       <style>{`
+        .allprojects-grid {
+          grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        }
         .card-hover:hover {
           border-color: rgba(229, 9, 20, 0.45) !important;
           transform: translateY(-4px);
+        }
+        @media (max-width: 640px) {
+          .allprojects-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .allprojects-toolbar {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            padding: 1rem !important;
+          }
         }
       `}</style>
     </div>

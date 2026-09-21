@@ -185,11 +185,10 @@ export default function ProjectDetail() {
 
           {/* Quick Metrics Bar */}
           <div
+            className="project-detail-metrics"
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-              gap: '1.5rem',
-              padding: '2rem',
+              gap: '1.25rem',
               borderRadius: '18px',
               backgroundColor: 'var(--bg-elevated)',
               border: '1px solid var(--border-subtle)',
@@ -288,20 +287,20 @@ export default function ProjectDetail() {
 
           {/* Challenge & Solution Grid */}
           <div
+            className="project-detail-challenge-grid"
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: '2.5rem',
-              marginBottom: '5rem'
+              gap: '2rem',
+              marginBottom: '4.5rem'
             }}
           >
             {/* The Challenge */}
             <div
+              className="project-challenge-card"
               style={{
                 backgroundColor: 'var(--bg-elevated)',
                 border: '1px solid var(--border-subtle)',
-                borderRadius: '20px',
-                padding: '2.5rem'
+                borderRadius: '20px'
               }}
             >
               <div
@@ -329,11 +328,11 @@ export default function ProjectDetail() {
 
             {/* The Solution */}
             <div
+              className="project-challenge-card"
               style={{
                 backgroundColor: 'var(--bg-elevated)',
                 border: '1px solid rgba(229, 9, 20, 0.3)',
-                borderRadius: '20px',
-                padding: '2.5rem'
+                borderRadius: '20px'
               }}
             >
               <div
@@ -575,6 +574,32 @@ export default function ProjectDetail() {
       </main>
 
       <Footer />
+      <style>{`
+        .project-detail-metrics {
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          padding: 2rem;
+        }
+        .project-detail-challenge-grid {
+          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        }
+        .project-challenge-card {
+          padding: 2.5rem;
+        }
+        @media (max-width: 640px) {
+          .project-detail-metrics {
+            grid-template-columns: repeat(2, 1fr) !important;
+            padding: 1.25rem !important;
+            gap: 1rem !important;
+          }
+          .project-detail-challenge-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1.5rem !important;
+          }
+          .project-challenge-card {
+            padding: 1.5rem !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

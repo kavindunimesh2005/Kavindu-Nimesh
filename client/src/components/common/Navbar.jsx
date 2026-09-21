@@ -53,8 +53,25 @@ export default function Navbar({ resumeUrl }) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = 'unset';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [mobileMenuOpen]);
+
   const handleNavClick = (e, href) => {
     playClick();
+    setMobileMenuOpen(false);
     if (location.pathname !== '/') {
       e.preventDefault();
       navigate('/' + href);
@@ -66,7 +83,6 @@ export default function Navbar({ resumeUrl }) {
       const target = document.querySelector(href);
       if (target) {
         target.scrollIntoView({ behavior: 'smooth' });
-        setMobileMenuOpen(false);
       }
     }
   };
@@ -88,7 +104,7 @@ export default function Navbar({ resumeUrl }) {
         }}
       />
 
-      {/* Top Left Fixed KN Badge */}
+      {/* Top Left Fixed KN Badge (Desktop only) */}
       <div
         style={{
           position: 'fixed',
@@ -146,31 +162,33 @@ export default function Navbar({ resumeUrl }) {
       <header
         style={{
           position: 'fixed',
-          top: '1.5rem',
+          top: '1rem',
           left: 0,
           width: '100%',
           display: 'flex',
           justifyContent: 'center',
           zIndex: 9998,
-          padding: '0 1rem',
+          padding: '0 0.75rem',
           pointerEvents: 'none'
         }}
       >
         <nav
+          className="navbar-pill"
           style={{
             pointerEvents: 'auto',
             height: '48px',
-            backgroundColor: isDark ? 'rgba(10, 10, 12, 0.92)' : 'rgba(255, 255, 255, 0.92)',
+            backgroundColor: isDark ? 'rgba(10, 10, 12, 0.94)' : 'rgba(255, 255, 255, 0.94)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255, 255, 255, 0.12)',
+            border: '1px solid rgba(255, 255, 255, 0.14)',
             borderRadius: '100px',
             display: 'flex',
             alignItems: 'center',
-            gap: '1.5rem',
-            padding: '0 1.25rem',
+            gap: '1.25rem',
+            padding: '0 1rem',
             boxShadow: '0 10px 30px rgba(0, 0, 0, 0.6)',
-            transition: 'all 0.3s ease'
+            transition: 'all 0.3s ease',
+            maxWidth: 'calc(100vw - 1.5rem)'
           }}
         >
           {/* Left indicator inside pill: Red Dot + KN */}
@@ -247,7 +265,7 @@ export default function Navbar({ resumeUrl }) {
           </div>
 
           {/* Right Controls: Resume button & Sun Theme Toggle */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingLeft: '0.5rem', borderLeft: '1px solid rgba(255, 255, 255, 0.1)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', paddingLeft: '0.35rem', borderLeft: '1px solid rgba(255, 255, 255, 0.1)' }}>
             <a
               href={resumeUrl || '#contact'}
               target={resumeUrl?.startsWith('http') ? '_blank' : '_self'}
@@ -255,13 +273,13 @@ export default function Navbar({ resumeUrl }) {
               onClick={playClick}
               onMouseEnter={playHover}
               style={{
-                padding: '0.25rem 0.85rem',
+                padding: '0.28rem 0.75rem',
                 borderRadius: '4px',
                 backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.25)',
+                border: '1px solid rgba(255, 255, 255, 0.22)',
                 color: '#ffffff',
                 fontFamily: "'Space Grotesk', sans-serif",
-                fontSize: '0.8rem',
+                fontSize: '0.78rem',
                 fontWeight: 600,
                 textDecoration: 'none',
                 transition: 'all 0.2s ease'
@@ -283,7 +301,9 @@ export default function Navbar({ resumeUrl }) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: '0.2rem'
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%'
               }}
               className="interactive-hover"
             >
@@ -293,63 +313,155 @@ export default function Navbar({ resumeUrl }) {
             {/* Mobile Hamburger Toggle */}
             <button
               onClick={() => { setMobileMenuOpen(!mobileMenuOpen); playClick(); }}
+              aria-label="Toggle mobile navigation menu"
               style={{
                 background: 'none',
                 border: 'none',
                 color: '#ffffff',
-                display: 'none'
+                display: 'none',
+                width: '34px',
+                height: '34px',
+                borderRadius: '6px',
+                alignItems: 'center',
+                justifyContent: 'center'
               }}
               className="mobile-toggle"
             >
-              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </nav>
       </header>
 
-      {/* Mobile Menu Drawer */}
+      {/* Fullscreen Mobile Menu Drawer */}
       {mobileMenuOpen && (
         <div
           style={{
             position: 'fixed',
             inset: 0,
             backgroundColor: 'rgba(5, 5, 5, 0.98)',
-            zIndex: 9997,
+            backdropFilter: 'blur(25px)',
+            WebkitBackdropFilter: 'blur(25px)',
+            zIndex: 10000,
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '2rem'
+            justifyContent: 'space-between',
+            padding: '1.5rem',
+            overflowY: 'auto'
           }}
+          className="no-scrollbar"
         >
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', textAlign: 'center' }}>
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={(e) => handleNavClick(e, link.href)}
+          {/* Top Bar of Drawer */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '1rem', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+              <div
                 style={{
-                  fontFamily: "'Bebas Neue', 'Syne', sans-serif",
-                  fontSize: '2.5rem',
-                  letterSpacing: '0.05em',
-                  color: '#ffffff',
-                  textDecoration: 'none'
+                  width: '34px',
+                  height: '34px',
+                  borderRadius: '6px',
+                  backgroundColor: '#e50914',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontFamily: "'Syne', sans-serif",
+                  fontWeight: 900,
+                  fontSize: '15px',
+                  color: '#ffffff'
                 }}
               >
-                {link.name}
-              </a>
-            ))}
+                KN
+              </div>
+              <div>
+                <div style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: '0.95rem', color: '#ffffff' }}>
+                  Kavindu Nimesh
+                </div>
+                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.68rem', color: '#e50914' }}>
+                  Aura Digital Developer
+                </div>
+              </div>
+            </div>
 
-            <div style={{ marginTop: '1.5rem' }}>
+            <button
+              onClick={() => { setMobileMenuOpen(false); playClick(); }}
+              aria-label="Close menu"
+              style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                color: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer'
+              }}
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* Nav Links List */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', margin: 'auto 0', padding: '1.5rem 0' }}>
+            {navLinks.map((link, idx) => {
+              const sectionId = link.href.replace('#', '');
+              const isActive = activeSection === sectionId;
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
+                  style={{
+                    fontFamily: "'Bebas Neue', 'Syne', sans-serif",
+                    fontSize: 'clamp(2rem, 7vw, 2.75rem)',
+                    letterSpacing: '0.04em',
+                    color: isActive ? '#e50914' : '#ffffff',
+                    textDecoration: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0.25rem 0',
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.04)',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  <span>{link.name}</span>
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.85rem', color: isActive ? '#e50914' : '#71717a' }}>
+                    0{idx + 1}
+                  </span>
+                </a>
+              );
+            })}
+          </div>
+
+          {/* Drawer Bottom Actions: Resume Button & Direct Links */}
+          <div style={{ paddingTop: '1.5rem', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+            <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.25rem' }}>
               <a
                 href={resumeUrl || '#contact'}
                 onClick={() => setMobileMenuOpen(false)}
                 className="btn btn-primary"
-                style={{ padding: '0.75rem 2rem' }}
+                style={{ flex: 1, padding: '0.85rem 1rem', fontSize: '0.9rem' }}
               >
-                Resume
+                <span>Download Resume</span>
+                <ArrowUpRight size={16} />
+              </a>
+
+              <a
+                href="https://wa.me/94771234567"
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => setMobileMenuOpen(false)}
+                className="btn btn-secondary"
+                style={{ padding: '0.85rem 1.25rem', fontSize: '0.9rem', color: '#25D366', borderColor: 'rgba(37, 211, 102, 0.4)' }}
+              >
+                WhatsApp
               </a>
             </div>
+
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.72rem', color: '#71717a', textAlign: 'center' }}>
+              Colombo, Sri Lanka • UTC +5:30
+            </p>
           </div>
         </div>
       )}
@@ -360,10 +472,16 @@ export default function Navbar({ resumeUrl }) {
             display: none !important;
           }
           .mobile-toggle {
-            display: block !important;
+            display: flex !important;
           }
           .top-left-kn {
             display: none !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .navbar-pill {
+            gap: 0.65rem !important;
+            padding: 0 0.75rem !important;
           }
         }
       `}</style>

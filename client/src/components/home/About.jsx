@@ -39,10 +39,8 @@ export default function About({ about }) {
 
         {/* Editorial 2-Column Grid */}
         <div
+          className="about-editorial-grid"
           style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: '4.5rem',
             alignItems: 'center'
           }}
         >
@@ -60,7 +58,9 @@ export default function About({ about }) {
                 boxShadow: isPortraitHovered
                   ? '0 25px 50px -12px rgba(229, 9, 20, 0.35)'
                   : '0 20px 40px rgba(0, 0, 0, 0.5)',
-                transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+                transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                maxWidth: '460px',
+                margin: '0 auto'
               }}
               className="interactive-hover"
             >
@@ -115,29 +115,29 @@ export default function About({ about }) {
                 <div
                   style={{
                     position: 'absolute',
-                    bottom: '1.5rem',
-                    left: '1.5rem',
-                    right: '1.5rem',
-                    padding: '1.25rem',
+                    bottom: '1rem',
+                    left: '1rem',
+                    right: '1rem',
+                    padding: '1rem',
                     borderRadius: '12px',
-                    backgroundColor: 'rgba(13, 13, 13, 0.85)',
+                    backgroundColor: 'rgba(13, 13, 13, 0.9)',
                     backdropFilter: 'blur(15px)',
                     border: '1px solid rgba(255, 255, 255, 0.12)'
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div>
-                      <h3 style={{ fontFamily: "'Syne', sans-serif", fontSize: '1.25rem', fontWeight: 800 }}>
+                      <h3 style={{ fontFamily: "'Syne', sans-serif", fontSize: '1.15rem', fontWeight: 800 }}>
                         {about?.name || 'Kavindu Nimesh'}
                       </h3>
-                      <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.78rem', color: '#e50914' }}>
+                      <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.74rem', color: '#e50914' }}>
                         {about?.company || 'Aura Digital Developer Sri Lanka'}
                       </p>
                     </div>
                     <div
                       style={{
-                        width: '38px',
-                        height: '38px',
+                        width: '36px',
+                        height: '36px',
                         borderRadius: '50%',
                         backgroundColor: '#e50914',
                         display: 'flex',
@@ -146,7 +146,7 @@ export default function About({ about }) {
                         color: '#ffffff'
                       }}
                     >
-                      <Terminal size={18} />
+                      <Terminal size={17} />
                     </div>
                   </div>
                 </div>
@@ -156,48 +156,48 @@ export default function About({ about }) {
 
           {/* Right Column: Bio Narrative & Stats */}
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#e50914', marginBottom: '1rem' }}>
-              <Sparkles size={18} />
-              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, letterSpacing: '0.05em' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#e50914', marginBottom: '0.85rem' }}>
+              <Sparkles size={16} />
+              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: '0.85rem', letterSpacing: '0.05em' }}>
                 FOUNDER & LEAD ENGINEER
               </span>
             </div>
 
             <h3
               style={{
-                fontSize: 'clamp(1.75rem, 3vw, 2.5rem)',
+                fontSize: 'clamp(1.6rem, 2.8vw, 2.5rem)',
                 fontWeight: 800,
                 lineHeight: 1.2,
-                marginBottom: '1.5rem',
+                marginBottom: '1.25rem',
                 letterSpacing: '-0.02em'
               }}
             >
               Crafting code that scales. Designing interfaces that captivate.
             </h3>
 
-            <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: 1.8, marginBottom: '1.25rem' }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.98rem', lineHeight: 1.75, marginBottom: '1.15rem' }}>
               {about?.bio ||
                 'Driven Software Engineer & Web Developer with 3+ years of experience delivering high-performance digital products, mission-critical web applications, and award-winning user interfaces. Founder of Aura Digital Developer Sri Lanka, engineering digital solutions that merge architectural precision with bleeding-edge aesthetic performance.'}
             </p>
 
-            <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', lineHeight: 1.8, marginBottom: '2rem' }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.75, marginBottom: '1.75rem' }}>
               {about?.secondary_bio ||
                 'Specialized in building full-stack enterprise web platforms, custom e-commerce systems, real-time admin dashboards, and database-driven solutions. Dedicated to clean code, modular architecture, and modern UX design that drives measurable business growth.'}
             </p>
 
             {/* Core Competencies Checklist */}
             <div
+              className="about-capabilities-grid"
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-                gap: '0.85rem',
-                marginBottom: '3rem'
+                gap: '0.75rem',
+                marginBottom: '2.5rem'
               }}
             >
               {capabilities.map((cap) => (
                 <div key={cap} style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
                   <CheckCircle2 size={16} style={{ color: '#e50914', flexShrink: 0 }} />
-                  <span style={{ fontSize: '0.92rem', color: 'var(--text-primary)', fontWeight: 500 }}>
+                  <span style={{ fontSize: '0.9rem', color: 'var(--text-primary)', fontWeight: 500 }}>
                     {cap}
                   </span>
                 </div>
@@ -206,10 +206,10 @@ export default function About({ about }) {
 
             {/* Live Database Dynamic Statistics Grid */}
             <div
+              className="about-stats-grid"
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
-                gap: '1rem',
+                gap: '0.85rem',
                 paddingTop: '1.5rem',
                 borderTop: '1px solid rgba(255, 255, 255, 0.08)'
               }}
@@ -220,7 +220,7 @@ export default function About({ about }) {
                   style={{
                     backgroundColor: 'var(--bg-elevated)',
                     border: '1px solid var(--border-subtle)',
-                    padding: '1.25rem',
+                    padding: '1.1rem',
                     borderRadius: '12px',
                     transition: 'all 0.3s ease'
                   }}
@@ -230,7 +230,7 @@ export default function About({ about }) {
                   <div
                     style={{
                       fontFamily: "'Syne', sans-serif",
-                      fontSize: '2.4rem',
+                      fontSize: 'clamp(1.8rem, 3vw, 2.4rem)',
                       fontWeight: 900,
                       color: '#ffffff',
                       lineHeight: 1,
@@ -242,10 +242,10 @@ export default function About({ about }) {
                   <div
                     style={{
                       fontFamily: "'Space Grotesk', sans-serif",
-                      fontSize: '0.78rem',
+                      fontSize: '0.75rem',
                       color: '#a1a1aa',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.05em'
+                      letterSpacing: '0.04em'
                     }}
                   >
                     {s.label}
@@ -260,6 +260,29 @@ export default function About({ about }) {
       </div>
 
       <style>{`
+        .about-editorial-grid {
+          display: grid;
+          grid-template-columns: 1fr 1.15fr;
+          gap: 4rem;
+        }
+        .about-capabilities-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .about-stats-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+        @media (max-width: 860px) {
+          .about-editorial-grid {
+            grid-template-columns: 1fr !important;
+            gap: 2.5rem !important;
+          }
+          .about-capabilities-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .about-stats-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
         @keyframes scanline {
           0% { top: 0; }
           100% { top: 100%; }

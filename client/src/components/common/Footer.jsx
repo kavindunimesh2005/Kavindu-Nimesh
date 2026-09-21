@@ -35,11 +35,11 @@ export default function Footer({ about, socials }) {
       <div className="container">
         {/* Upper Footer Grid */}
         <div
+          className="footer-grid"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
             gap: '3.5rem',
-            paddingBottom: '4rem',
+            paddingBottom: '3.5rem',
             borderBottom: '1px solid rgba(255, 255, 255, 0.06)'
           }}
         >
@@ -192,13 +192,14 @@ export default function Footer({ about, socials }) {
 
         {/* Lower Footer Bottom Bar */}
         <div
+          className="footer-bottom-bar"
           style={{
             paddingTop: '2.5rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             flexWrap: 'wrap',
-            gap: '1.5rem'
+            gap: '1.25rem'
           }}
         >
           <div style={{ color: '#71717a', fontSize: '0.85rem' }}>
@@ -243,6 +244,26 @@ export default function Footer({ about, socials }) {
           </button>
         </div>
       </div>
+
+      <style>{`
+        .footer-grid {
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+        @media (max-width: 640px) {
+          footer {
+            padding: 4rem 0 2.5rem !important;
+          }
+          .footer-grid {
+            grid-template-columns: 1fr !important;
+            gap: 2.25rem !important;
+          }
+          .footer-bottom-bar {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 1.5rem !important;
+          }
+        }
+      `}</style>
     </footer>
   );
 }

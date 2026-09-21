@@ -125,10 +125,10 @@ export default function Contact({ settings, socials }) {
 
         {/* 2-Column Grid: Form & Direct Contact Channels */}
         <div
+          className="contact-grid"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: '4rem',
+            gap: '3.5rem',
             maxWidth: '1140px',
             margin: '0 auto'
           }}
@@ -299,11 +299,11 @@ export default function Contact({ settings, socials }) {
 
           {/* Right Column: Interactive Proposal Form */}
           <div
+            className="contact-form-container"
             style={{
               backgroundColor: 'var(--bg-card)',
               border: '1px solid var(--border-subtle)',
               borderRadius: '24px',
-              padding: 'clamp(2rem, 4vw, 3rem)',
               backdropFilter: 'blur(20px)',
               boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4)'
             }}
@@ -549,9 +549,24 @@ export default function Contact({ settings, socials }) {
       </div>
 
       <style>{`
+        .contact-grid {
+          grid-template-columns: 1fr 1.25fr;
+        }
+        .contact-form-container {
+          padding: 3rem;
+        }
         .direct-card:hover {
           border-color: rgba(229, 9, 20, 0.5) !important;
           transform: translateY(-3px);
+        }
+        @media (max-width: 900px) {
+          .contact-grid {
+            grid-template-columns: 1fr !important;
+            gap: 2.5rem !important;
+          }
+          .contact-form-container {
+            padding: 1.5rem 1.25rem !important;
+          }
         }
       `}</style>
     </section>

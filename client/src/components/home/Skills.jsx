@@ -72,14 +72,16 @@ export default function Skills({ skills }) {
 
           {/* Category Filter Pills */}
           <div
+            className="no-scrollbar skills-filter-bar"
             style={{
               display: 'flex',
               gap: '0.5rem',
-              flexWrap: 'wrap',
               backgroundColor: 'var(--bg-elevated)',
               padding: '0.4rem',
               borderRadius: '100px',
-              border: '1px solid var(--border-subtle)'
+              border: '1px solid var(--border-subtle)',
+              maxWidth: '100%',
+              overflowX: 'auto'
             }}
           >
             {categories.map((cat) => {
@@ -95,10 +97,12 @@ export default function Skills({ skills }) {
                     fontFamily: "'Space Grotesk', sans-serif",
                     fontSize: '0.84rem',
                     fontWeight: 600,
+                    whiteSpace: 'nowrap',
                     color: isSelected ? '#ffffff' : 'var(--text-secondary)',
                     backgroundColor: isSelected ? '#e50914' : 'transparent',
                     boxShadow: isSelected ? '0 0 15px rgba(229, 9, 20, 0.4)' : 'none',
-                    transition: 'all 0.25s ease'
+                    transition: 'all 0.25s ease',
+                    flexShrink: 0
                   }}
                   className="interactive-hover"
                 >
@@ -111,9 +115,9 @@ export default function Skills({ skills }) {
 
         {/* Bento Interactive Cards Grid */}
         <div
+          className="skills-bento-grid"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
             gap: '1.25rem'
           }}
         >
@@ -128,7 +132,6 @@ export default function Skills({ skills }) {
                   backgroundColor: isHovered ? 'var(--bg-card-hover)' : 'var(--bg-card)',
                   border: isHovered ? '1px solid #e50914' : '1px solid var(--border-subtle)',
                   borderRadius: '16px',
-                  padding: '1.75rem',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
@@ -144,8 +147,8 @@ export default function Skills({ skills }) {
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
                     <div
                       style={{
-                        width: '46px',
-                        height: '46px',
+                        width: '44px',
+                        height: '44px',
                         borderRadius: '12px',
                         backgroundColor: isHovered ? '#e50914' : 'rgba(255, 255, 255, 0.05)',
                         color: isHovered ? '#ffffff' : '#e50914',
@@ -176,7 +179,7 @@ export default function Skills({ skills }) {
                   <h4
                     style={{
                       fontFamily: "'Space Grotesk', sans-serif",
-                      fontSize: '1.15rem',
+                      fontSize: '1.1rem',
                       fontWeight: 700,
                       color: 'var(--text-primary)',
                       marginBottom: '0.5rem'
@@ -187,12 +190,12 @@ export default function Skills({ skills }) {
                 </div>
 
                 {/* Bottom Row: Proficiency Indicator & Level Tag */}
-                <div style={{ marginTop: '1.5rem' }}>
+                <div style={{ marginTop: '1.25rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.75rem', color: '#a1a1aa' }}>
+                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.74rem', color: '#a1a1aa' }}>
                       Proficiency
                     </span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.8rem', fontWeight: 700, color: '#e50914' }}>
+                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: '0.78rem', fontWeight: 700, color: '#e50914' }}>
                       {skill.proficiency || 90}%
                     </span>
                   </div>
@@ -226,6 +229,23 @@ export default function Skills({ skills }) {
         </div>
 
       </div>
+
+      <style>{`
+        .skills-bento-grid {
+          grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        }
+        .skill-bento-card {
+          padding: 1.75rem;
+        }
+        @media (max-width: 640px) {
+          .skills-bento-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .skill-bento-card {
+            padding: 1.25rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

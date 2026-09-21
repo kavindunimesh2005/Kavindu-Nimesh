@@ -12,27 +12,7 @@ export default function HeroCanvas() {
     let width = (canvas.width = canvas.parentElement.offsetWidth);
     let height = (canvas.height = canvas.parentElement.offsetHeight);
 
-    const handleResize = () => {
-      if (!canvas || !canvas.parentElement) return;
-      width = canvas.width = canvas.parentElement.offsetWidth;
-      height = canvas.height = canvas.parentElement.offsetHeight;
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    const mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
-
-    const handleMouseMove = (e) => {
-      const rect = canvas.getBoundingClientRect();
-      const clientX = e.clientX - rect.left;
-      const clientY = e.clientY - rect.top;
-      mouse.targetX = (clientX - width / 2) * 0.0005;
-      mouse.targetY = (clientY - height / 2) * 0.0005;
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-
-    // 3D Polyhedron Geodesic Geometry for the right side
+    // 3D Polyhedron Geodesic Geometry
     const phi = (1 + Math.sqrt(5)) / 2; // Golden ratio
     const baseVertices = [
       [-1,  phi, 0],
@@ -47,7 +27,6 @@ export default function HeroCanvas() {
       [ phi, 0,  1],
       [-phi, 0, -1],
       [-phi, 0,  1],
-      // Intermediate decorative vertices
       [0, phi * 0.7, phi * 0.7],
       [phi * 0.7, 0, phi * 0.7],
       [-phi * 0.7, 0, phi * 0.7],
@@ -56,26 +35,65 @@ export default function HeroCanvas() {
       [-phi * 0.7, phi * 0.7, 0]
     ];
 
-    // Normalize & scale
-    const radius = Math.min(width, height) * 0.38;
-    const vertices = baseVertices.map(([x, y, z]) => {
+    let radius = Math.min(width, height) * (width < 768 ? 0.32 : 0.38);
+    let vertices = baseVertices.map(([x, y, z]) => {
       const len = Math.sqrt(x * x + y * y + z * z);
       return [(x / len) * radius, (y / len) * radius, (z / len) * radius];
     });
 
-    // Compute edges between close vertices
-    const edges = [];
-    for (let i = 0; i < vertices.length; i++) {
-      for (let j = i + 1; j < vertices.length; j++) {
-        const dx = vertices[i][0] - vertices[j][0];
-        const dy = vertices[i][1] - vertices[j][1];
-        const dz = vertices[i][2] - vertices[j][2];
-        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-        if (dist < radius * 1.3) {
-          edges.push([i, j]);
+    const computeEdges = () => {
+      const e = [];
+      for (let i = 0; i < vertices.length; i++) {
+        for (let j = i + 1; j < vertices.length; j++) {
+          const dx = vertices[i][0] - vertices[j][0];
+          const dy = vertices[i][1] - vertices[j][1];
+          const dz = vertices[i][2] - vertices[j][2];
+          const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+          if (dist < radius * 1.3) {
+            e.push([i, j]);
+          }
         }
       }
-    }
+      return e;
+    };
+
+    let edges = computeEdges();
+
+    const handleResize = () => {
+      if (!canvas || !canvas.parentElement) return;
+      width = canvas.width = canvas.parentElement.offsetWidth;
+      height = canvas.height = canvas.parentElement.offsetHeight;
+      radius = Math.min(width, height) * (width < 768 ? 0.32 : 0.38);
+      vertices = baseVertices.map(([x, y, z]) => {
+        const len = Math.sqrt(x * x + y * y + z * z);
+        return [(x / len) * radius, (y / len) * radius, (z / len) * radius];
+      });
+      edges = computeEdges();
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    const mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
+
+    const handleMouseMove = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.clientX - rect.left;
+      const clientY = e.clientY - rect.top;
+      mouse.targetX = (clientX - width / 2) * 0.0005;
+      mouse.targetY = (clientY - height / 2) * 0.0005;
+    };
+
+    const handleTouchMove = (e) => {
+      if (!e.touches || e.touches.length === 0) return;
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches[0].clientX - rect.left;
+      const clientY = e.touches[0].clientY - rect.top;
+      mouse.targetX = (clientX - width / 2) * 0.0008;
+      mouse.targetY = (clientY - height / 2) * 0.0008;
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
 
     let rotX = 0.2;
     let rotY = 0.4;
@@ -84,18 +102,18 @@ export default function HeroCanvas() {
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // Smooth mouse interpolation
+      // Smooth mouse / touch interpolation
       mouse.x += (mouse.targetX - mouse.x) * 0.05;
       mouse.y += (mouse.targetY - mouse.y) * 0.05;
 
       // Ambient rotation
-      rotX += 0.003 + mouse.y * 0.2;
-      rotY += 0.004 + mouse.x * 0.2;
+      rotX += 0.003 + mouse.y * 0.15;
+      rotY += 0.004 + mouse.x * 0.15;
       rotZ += 0.001;
 
-      // Center position of 3D wireframe (placed on the right side)
+      // Center position of 3D wireframe
       const isMobile = width < 768;
-      const centerX = isMobile ? width * 0.5 : width * 0.82;
+      const centerX = isMobile ? width * 0.8 : width * 0.82;
       const centerY = isMobile ? height * 0.65 : height * 0.48;
       const fov = 700;
 
@@ -125,30 +143,31 @@ export default function HeroCanvas() {
       });
 
       // Draw red wireframe edges
+      const maxAlpha = isMobile ? 0.45 : 0.65;
       for (const [i, j] of edges) {
         const p1 = projected[i];
         const p2 = projected[j];
 
         // Depth-based alpha
         const avgZ = (p1.z + p2.z) / 2;
-        const alpha = Math.max(0.08, Math.min(0.65, (avgZ + radius) / (radius * 2)));
+        const alpha = Math.max(0.06, Math.min(maxAlpha, (avgZ + radius) / (radius * 2)));
 
         ctx.beginPath();
         ctx.moveTo(p1.x, p1.y);
         ctx.lineTo(p2.x, p2.y);
         ctx.strokeStyle = `rgba(229, 9, 20, ${alpha})`;
-        ctx.lineWidth = alpha > 0.35 ? 1.1 : 0.7;
+        ctx.lineWidth = alpha > 0.3 ? 1.0 : 0.6;
         ctx.stroke();
       }
 
       // Draw glowing red vertices
       for (const p of projected) {
-        const alpha = Math.max(0.2, Math.min(0.9, (p.z + radius) / (radius * 2)));
+        const alpha = Math.max(0.15, Math.min(isMobile ? 0.7 : 0.9, (p.z + radius) / (radius * 2)));
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 2.2 * p.scale, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, (isMobile ? 1.8 : 2.2) * p.scale, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(229, 9, 20, ${alpha})`;
         ctx.shadowColor = '#e50914';
-        ctx.shadowBlur = 10;
+        ctx.shadowBlur = isMobile ? 6 : 10;
         ctx.fill();
         ctx.shadowBlur = 0;
       }
@@ -162,6 +181,7 @@ export default function HeroCanvas() {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
     };
   }, []);
 
