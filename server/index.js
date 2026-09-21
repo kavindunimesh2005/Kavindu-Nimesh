@@ -50,6 +50,19 @@ app.use('/api/*', (req, res) => {
   res.status(404).json({ success: false, message: `Endpoint not found: ${req.originalUrl}` });
 });
 
+// Serve static React production build if available
+const clientDist = path.join(__dirname, '../client/dist');
+const fs = require('fs');
+if (fs.existsSync(clientDist)) {
+  app.use(express.static(clientDist));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
+      return next();
+    }
+    res.sendFile(path.join(clientDist, 'index.html'));
+  });
+}
+
 // Global Error Handler
 app.use((err, req, res, next) => {
   console.error('Unhandled server error:', err);

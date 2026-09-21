@@ -9,7 +9,8 @@
     "client": "cd client && npm run dev",
     "dev": "concurrently --kill-others-on-fail -n \"SERVER,CLIENT\" -c \"red,cyan\" \"npm run server\" \"npm run client\"",
     "seed": "cd server && npm run seed",
-    "build": "cd client && npm run build"
+    "build": "cd client && npm run build",
+    "start": "node server/index.js"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
