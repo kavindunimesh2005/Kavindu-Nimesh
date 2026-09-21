@@ -26,7 +26,14 @@ export default function ProjectDetail() {
       try {
         const res = await api.getProjectBySlug(slug);
         if (res.success && res.data) {
-          setProjectData(res.data);
+          const project = res.data.project || res.data;
+          const prevProject = res.data.prevProject || null;
+          const nextProject = res.data.nextProject || null;
+          if (project && project.title) {
+            setProjectData({ project, prevProject, nextProject });
+          } else {
+            setError('Project not found');
+          }
         } else {
           setError('Project not found');
         }

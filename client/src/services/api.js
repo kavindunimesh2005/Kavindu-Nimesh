@@ -154,9 +154,20 @@ export const api = {
       }
     }
     const projects = getStored('projects', defaultPortfolioData.projects);
-    const project = projects?.find(p => p.slug === slug);
-    if (project) {
-      return { success: true, data: project };
+    const currentIndex = projects?.findIndex(p => p.slug === slug);
+    if (currentIndex !== -1 && currentIndex !== undefined) {
+      const project = projects[currentIndex];
+      const prevProject = currentIndex > 0 ? { slug: projects[currentIndex - 1].slug, title: projects[currentIndex - 1].title } : null;
+      const nextProject = currentIndex < projects.length - 1 ? { slug: projects[currentIndex + 1].slug, title: projects[currentIndex + 1].title } : null;
+
+      return {
+        success: true,
+        data: {
+          project,
+          prevProject,
+          nextProject
+        }
+      };
     }
     throw new Error('Project not found');
   },
