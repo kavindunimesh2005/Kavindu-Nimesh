@@ -3,8 +3,12 @@ import defaultPortfolioData from '../data/defaultPortfolioData';
 
 const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
-// Detect if running on static GitHub Pages without an active backend server
-const isStaticHost = typeof window !== 'undefined' && window.location.hostname.includes('github.io') && !import.meta.env.VITE_API_URL;
+// Detect if running on static hosting (e.g. GitHub Pages) without an active backend server
+const isStaticHost = typeof window !== 'undefined' && (
+  window.location.hostname.includes('github.io') ||
+  window.location.hostname.endsWith('github.io') ||
+  (!['localhost', '127.0.0.1'].includes(window.location.hostname) && !import.meta.env.VITE_API_URL)
+);
 
 // Default mock messages for demo / static hosting
 const defaultMessages = [
