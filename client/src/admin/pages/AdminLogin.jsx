@@ -5,8 +5,8 @@ import { useAuth } from '../context/AuthContext';
 import { useSound } from '../../hooks/useSound';
 
 export default function AdminLogin() {
-  const [email, setEmail] = useState('admin@kavindu.dev');
-  const [password, setPassword] = useState('Admin@2026!');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -136,7 +136,7 @@ export default function AdminLogin() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                placeholder="admin@kavindu.dev"
+                placeholder="name@example.com"
                 style={{
                   width: '100%',
                   padding: '0.85rem 1rem 0.85rem 2.8rem',
@@ -188,25 +188,6 @@ export default function AdminLogin() {
             <span>{loading ? 'Authenticating...' : 'Sign In to Dashboard'}</span>
           </button>
         </form>
-
-        {/* Demo Hint Banner */}
-        <div
-          style={{
-            marginTop: '2rem',
-            padding: '0.9rem',
-            borderRadius: '10px',
-            backgroundColor: 'rgba(255, 255, 255, 0.03)',
-            border: '1px dashed rgba(255, 255, 255, 0.15)',
-            textAlign: 'center'
-          }}
-        >
-          <div style={{ fontSize: '0.75rem', color: '#71717a', fontFamily: "'JetBrains Mono', monospace" }}>
-            PRE-CONFIGURED ADMIN CREDENTIALS:
-          </div>
-          <div style={{ fontSize: '0.82rem', color: '#ffffff', marginTop: '0.2rem', fontFamily: "'JetBrains Mono', monospace" }}>
-            admin@kavindu.dev / Admin@2026!
-          </div>
-        </div>
 
       </div>
     </div>
