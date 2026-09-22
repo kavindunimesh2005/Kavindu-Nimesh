@@ -32,7 +32,7 @@ async function seedDatabase() {
       projects_count: 28,
       clients_count: 22,
       tech_count: 19,
-      portrait_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+      portrait_url: '/uploads/kavindu-portrait.jpg',
       resume_url: '/uploads/Kavindu_Nimesh_CV.pdf',
       location: 'Colombo, Sri Lanka',
       availability: 'Available for Select Client Projects',

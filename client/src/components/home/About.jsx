@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import { CheckCircle2, Code2, Sparkles, Award, Terminal } from 'lucide-react';
 import { useSound } from '../../hooks/useSound';
+import defaultPortrait from '../../assets/kavindu-portrait.jpg';
 
 export default function About({ about }) {
   const { playClick, playHover } = useSound();
   const [isPortraitHovered, setIsPortraitHovered] = useState(false);
+
+  // Use new Kavindu Nimesh portrait, overriding legacy unsplash placeholder if present
+  const portraitSrc = (!about?.portrait_url || about.portrait_url.includes('photo-1534528741775'))
+    ? defaultPortrait
+    : about.portrait_url;
 
   const capabilities = [
     'High-Conversion E-Commerce Platforms',
@@ -74,12 +80,14 @@ export default function About({ about }) {
                 }}
               >
                 <img
-                  src={about?.portrait_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80'}
-                  alt="Kavindu Nimesh"
+                  src={portraitSrc}
+                  alt={about?.name || 'Kavindu Nimesh'}
+                  onError={(e) => { e.currentTarget.src = defaultPortrait; }}
                   style={{
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
+                    objectPosition: 'center 20%',
                     filter: isPortraitHovered ? 'grayscale(20%) contrast(110%)' : 'grayscale(100%) contrast(105%)',
                     transform: isPortraitHovered ? 'scale(1.04)' : 'scale(1)',
                     transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)'
